@@ -74,6 +74,11 @@ footer{border-top:1px solid var(--line);padding:26px 20px;text-align:center;colo
 .sec{margin-top:56px}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:700px){.two,.demo{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.offer,.mystery{background:#1B1722!important;color:#F5EFE6}
+.tip:hover:after,.tip:focus:after{background:#1B1722;color:#F5EFE6}
+.fold.kept,.fold.kept:disabled{color:#1B1722!important}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .esc.low{color:#7FE3C2}:root:not([data-theme="light"]) .esc.mid{background:#4A3B10;color:#FFD66B}:root:not([data-theme="light"]) .esc.hi{color:#FF9C92}}
+:root[data-theme="dark"] .esc.low{color:#7FE3C2}:root[data-theme="dark"] .esc.mid{background:#4A3B10;color:#FFD66B}:root[data-theme="dark"] .esc.hi{color:#FF9C92}
 </style></head><body>
 <nav><div class="nav">
 <img class="mlogo" src="minted-logo.png" alt="Minted logo"><button class="logo ib" data-go="home" aria-label="Print Quality HQ home"><i>🔍</i><span>Print Quality HQ<small>by Deanna Parker</small></span></button>
@@ -165,7 +170,7 @@ else if(t.dataset.d){const x=DX[t.dataset.d];$('#dr').innerHTML=`<div class="pan
 <details><summary>Customer communication</summary><div>"${x.say}"</div></details>
 <details><summary>Escalation</summary><div><span class="esc ${x.esc[0]}">${{low:'Unlikely',mid:'Possible',hi:'Likely'}[x.esc[0]]}</span> ${x.esc[1]}</div></details></div>`+helped();$('#dr').scrollIntoView({behavior:'smooth'})}
 else if(t.dataset.k){const x=KB[+t.dataset.k];$('#kr').innerHTML=`<div class="panel" style="margin-top:20px"><h3>${x.n}</h3><p class="lbl">What is it?</p><p>${x.w}</p><p class="lbl">Why does it matter?</p><p>${x.y}</p><p class="lbl">What does it look like?</p><div>${x.l}</div><p class="lbl">What should I check?</p><ul class="chk">${x.c.map(c=>`<li>${c}</li>`).join('')}</ul><p class="lbl">Common misconception</p><p>${x.m}</p><div class="diag">Quick tip: ${x.q}</div></div>`+helped();$('#kr').scrollIntoView({behavior:'smooth'})}
-else if(t.dataset.r){const[i,j]=t.dataset.r.split(':').map(Number),o=SC[i].o[j];document.querySelectorAll('[data-r]').forEach((b,n)=>{b.disabled=true;b.classList.add(SC[i].o[n][1]==2?'good':b.dataset.r===t.dataset.r?'bad':'')});$('#rf').innerHTML=`<div class="fb"><b>${['Not ideal','Okay','Best response'][o[1]]}.</b> ${o[2]}</div>${i<SC.length-1?`<p><button class="btn" data-n="${i+1}">Next scenario →</button></p>`:'<p>Scenarios complete. Try a case file next.</p>'}`}
+else if(t.dataset.r){const[i,j]=t.dataset.r.split(':').map(Number),o=SC[i].o[j];document.querySelectorAll('[data-r]').forEach((b,n)=>{b.disabled=true;const cl=SC[i].o[n][1]==2?'good':b.dataset.r===t.dataset.r?'bad':'';if(cl)b.classList.add(cl)});$('#rf').innerHTML=`<div class="fb"><b>${['Not ideal','Okay','Best response'][o[1]]}.</b> ${o[2]}</div>${i<SC.length-1?`<p><button class="btn" data-n="${i+1}">Next scenario →</button></p>`:'<p>Scenarios complete. Try a case file next.</p>'}`}
 else if(t.dataset.n)scen(+t.dataset.n);
 else if(t.dataset.a){const[i,j]=t.dataset.a.split(':').map(Number),c=CASES[i],p=t.closest('.panel');if(st.done[i]!=null)return;const ok=j===c[3];st.done[i]=ok;if(ok)st.score++;p.querySelectorAll('.opt').forEach((b,n)=>{b.disabled=true;if(n===c[3])b.classList.add('good');else if(n===j)b.classList.add('bad')});p.querySelector('.res').innerHTML=`<div class="fb"><div class="cracked ${ok?'ok':'no'}">${ok?'CASE CRACKED! ✦':'NOT QUITE!'}</div>${c[4]}</div>`;prog()}
 else if(t.dataset.h){$('#hr').innerHTML=t.dataset.h==='y'?'<p>Thanks! Glad it helped.</p>':'<label>What were you looking for?</label><textarea rows="2"></textarea><p><button class="btn" data-h="s">Send</button></p>';if(t.dataset.h==='s')$('#hr').innerHTML='<p>Thanks. In a real tool, this would feed improvements.</p>'}});
@@ -190,7 +195,7 @@ $('#gm').innerHTML=`<div class="panel"><h3>Print or No Print</h3><p>${msg}</p><d
 document.addEventListener('click',e=>{const t=e.target.closest('[data-g]');if(!t)return;const g=t.dataset.g.split(':');const k=g[0];
 if(k=='jep'){GM.j={s:0,u:{}};jR();$('#gm').scrollIntoView({behavior:'smooth'})}
 else if(k=='jt'){const ci=+g[1],r=+g[2],q=JC[ci].q[r],j=GM.j;j.cur={ci,r,o:sh([q[1],...q[2]])};$('#jq').innerHTML=`<div class="panel"><span class="lbl">${JC[ci].n} for $${(r+1)*100}</span><h3>${q[0]}</h3>${j.cur.o.map((o,i)=>`<button class="opt" data-g="ja:${o==q[1]?1:0}">${o}</button>`).join('')}</div>`;document.querySelectorAll('.jt').forEach(b=>b.disabled=true)}
-else if(k=='ja'){const j=GM.j,c=j.cur,v=(c.r+1)*100,ok=g[1]=='1';j.s+=ok?v:-v;j.u[c.ci+'_'+c.r]=1;const q=JC[c.ci].q[c.r];document.querySelectorAll('#jq .opt').forEach(b=>{b.disabled=true;b.classList.add(b.dataset.g=='ja:1'?'good':'')});$('#jq').insertAdjacentHTML('beforeend',`<div class="fb"><b>${ok?'CASE CRACKED! +$'+v:'NOT QUITE! -$'+v}</b> Answer: ${q[1]}. <button class="btn" data-g="jb">Back to board</button></div>`)}
+else if(k=='ja'){const j=GM.j,c=j.cur,v=(c.r+1)*100,ok=g[1]=='1';j.s+=ok?v:-v;j.u[c.ci+'_'+c.r]=1;const q=JC[c.ci].q[c.r];document.querySelectorAll('#jq .opt').forEach(b=>{b.disabled=true;if(b.dataset.g=='ja:1')b.classList.add('good')});if(!ok)t.classList.add('bad');$('#jq').insertAdjacentHTML('beforeend',`<div class="fb"><b>${ok?'CASE CRACKED! +$'+v:'NOT QUITE! -$'+v}</b> Answer: ${q[1]}. <button class="btn" data-g="jb">Back to board</button></div>`)}
 else if(k=='jb')jR();
 else if(k=='mnt'){GM.m={i:0,c:0,l:1};mR();$('#gm').scrollIntoView({behavior:'smooth'})}
 else if(k=='ma'){const m=GM.m,ok=g[1]=='1';if(ok)m.c++;document.querySelectorAll('#mo .opt').forEach(b=>{b.disabled=true;if(b.dataset.g=='ma:1')b.classList.add('good')});if(!ok)t.classList.add('bad');document.querySelector('#mf').innerHTML=`<div class="fb">${ok?'Correct!':'Not quite.'} <button class="btn" data-g="mn">${m.i<4?'Next question':'See result'}</button></div>`}
